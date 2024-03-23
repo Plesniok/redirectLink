@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  postgres2:
+    image: postgres:13
+    container_name: postgres-container2
+    environment:
+      POSTGRES_DB: java_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: passwd123
+    ports:
+      - "5432:5432"
+  redirect-link:
+    image: plesniok/micro/redirect-link:latest
+    container_name: redirect-link-container
+    depends_on:
+      - postgres2
+    ports:
+      - "5001:5001"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres2:5432/java_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: passwd123
+      SPRING_DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 5001
+  redirect-to-link:
+    image: plesniok/micro/redirect-to-link:latest
+    container_name: redirect-to-link-container
+    depends_on:
+      - postgres2
+    ports:
+      - "5002:5002"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres2:5432/java_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: passwd123
+      SPRING_DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 5002
