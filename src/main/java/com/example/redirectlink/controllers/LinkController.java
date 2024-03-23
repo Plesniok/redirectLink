@@ -54,7 +54,7 @@ public class LinkController {
 
         LinkEnity savedValue = linkRepository.save(requestData);
 
-        if( !savedValue.equals(requestData)){
+        if(savedValue.equals(requestData)){
 
             String base64Link = IdBaseConverter.toBase62(requestData.getId());
 
@@ -64,28 +64,6 @@ public class LinkController {
         };
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.APPLICATION_JSON).body("Internal server error");
-    }
-
-    @GetMapping("/link/{id}")
-    public ResponseEntity<Object> getLink(
-            @PathVariable("id") String encodedLinkId
-    ) {
-        Long linkId = IdBaseConverter.fromBase62ToLong(encodedLinkId);
-
-        System.out.println(linkId);
-
-         Optional<LinkEnity> foundLink = linkRepository.findById(linkId);
-
-        if (foundLink.isPresent()) {
-
-            URI location = URI.create(foundLink.get().getLink());
-            HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(location);
-            return new ResponseEntity<Object>(headers, HttpStatus.FOUND);
-        } else {
-
-            return ResponseEntity.notFound().build();
-        }
     }
 }
 
