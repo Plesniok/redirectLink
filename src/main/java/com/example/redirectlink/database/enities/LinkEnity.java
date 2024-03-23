@@ -11,9 +11,12 @@ public class LinkEnity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull(message = "Link cannot be null")
+    @NotNull(message = "Link cannot be dsanull")
     @URL(message = "Invalid url format")
     private String link;
+
+    @Transient
+    private transient String base64Id;
 
     public LinkEnity() {}
 
@@ -35,4 +38,11 @@ public class LinkEnity {
         this.link = link;
     }
 
+    public void setBase64Id(String base64Id) {
+        this.base64Id = base64Id;
+    }
+
+    public String getBase64Id() {
+        return base64Id;
+    }
 }
