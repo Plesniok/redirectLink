@@ -1,9 +1,12 @@
 package com.example.redirectlink.database.repositories;
 
 import com.example.redirectlink.database.enities.LinkEnity;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.cassandra.repository.CassandraRepository;
+import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
-public interface LinkRepository extends CrudRepository<LinkEnity, Long> {
+@Repository
+public interface LinkRepository extends CassandraRepository<LinkEnity, Long> {
 
 }

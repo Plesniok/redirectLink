@@ -6,7 +6,7 @@ import com.example.redirectlink.models.PostResponse;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
-import org.h2.util.json.JSONObject;
+//import org.h2.util.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,7 +16,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import services.IdBaseConverter;
+import com.example.redirectlink.services.IdBaseConverter;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -26,7 +26,8 @@ import java.util.Optional;
 
 @RestController
 public class LinkController {
-    private final LinkRepository linkRepository;
+    @Autowired
+    private LinkRepository linkRepository;
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -41,10 +42,9 @@ public class LinkController {
         return errors;
     }
 
-    @Autowired
-    public LinkController(LinkRepository linkRepository) {
-        this.linkRepository = linkRepository;
-    }
+//    public LinkController(LinkRepository linkRepository) {
+//        this.linkRepository = linkRepository;
+//    }
 
     @PostMapping("/link")
     @RateLimiter(name = "rateLimiterApi")
@@ -56,7 +56,8 @@ public class LinkController {
 
         if(savedValue.equals(requestData)){
 
-            String base64Link = IdBaseConverter.toBase62(requestData.getId());
+//            String base64Link = IdBaseConverter.toBase62(requestData.getId());
+            String base64Link = "1";
 
             savedValue.setBase64Id(base64Link);
 
