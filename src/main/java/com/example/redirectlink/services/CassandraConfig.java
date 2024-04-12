@@ -22,6 +22,12 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     @Value("${cassandra.basePackages}")
     private String basePackages;
 
+    @Value("${cassandra.local-datacenter}")
+    private String localDataCenter;
+    @Override
+    protected String getLocalDataCenter(){
+        return localDataCenter;
+    }
     @Override
     protected String getKeyspaceName() {
         System.out.println(keySpace);

@@ -2,6 +2,7 @@ package com.example.redirectlink.controllers;
 
 import com.example.redirectlink.database.enities.LinkEnity;
 import com.example.redirectlink.database.repositories.LinkRepository;
+import com.example.redirectlink.models.LinkKey;
 import com.example.redirectlink.models.PostResponse;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
@@ -19,10 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.redirectlink.services.IdBaseConverter;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class LinkController {
@@ -51,15 +49,11 @@ public class LinkController {
     public ResponseEntity addTask(
             @Valid @RequestBody LinkEnity requestData
     ) {
-
-        LinkEnity savedValue = linkRepository.save(requestData);
+        requestData.setBase64Id("1");
+        requestData.setKey(new LinkKey(UUID.randomUUID()));
+        LinkEnity savedValue = linkRepository.insert(requestData);
 
         if(savedValue.equals(requestData)){
-
-//            String base64Link = IdBaseConverter.toBase62(requestData.getId());
-            String base64Link = "1";
-
-            savedValue.setBase64Id(base64Link);
 
             return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(savedValue);
         };

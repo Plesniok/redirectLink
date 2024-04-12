@@ -48,6 +48,10 @@ public class LinkEnity {
         this.base64Id = base64Id;
     }
 
+    public void setKey(LinkKey key) {
+        this.key = key;
+    }
+
     public String getBase64Id() {
         return base64Id;
     }
