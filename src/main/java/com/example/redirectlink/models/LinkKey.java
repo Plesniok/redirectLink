@@ -21,5 +21,10 @@ public class LinkKey implements Serializable {
 
     // getters and setters
 
+    public UUID getLinkId() {
+        return linkId;
+    }
+
+
     // equals and hashcode
 }

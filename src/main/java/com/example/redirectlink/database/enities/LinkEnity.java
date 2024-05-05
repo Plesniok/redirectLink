@@ -7,7 +7,11 @@ import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
-@Table("links")
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+
+@Table("links2")
 public class LinkEnity {
     @PrimaryKey
     private LinkKey key;
@@ -19,6 +23,9 @@ public class LinkEnity {
 
     @Column("base64_id")
     private transient String base64Id;
+
+    @Column("initdate")
+    private LocalDate initDate;
 
     public LinkEnity() {}
 
@@ -54,5 +61,13 @@ public class LinkEnity {
 
     public String getBase64Id() {
         return base64Id;
+    }
+
+    public LocalDate getInitDate() {
+        return initDate;
+    }
+
+    public void setInitDate(LocalDate initDate) {
+        this.initDate = initDate;
     }
 }

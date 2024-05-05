@@ -4,6 +4,7 @@ import com.example.redirectlink.database.enities.LinkEnity;
 import com.example.redirectlink.database.repositories.LinkRepository;
 import com.example.redirectlink.models.LinkKey;
 import com.example.redirectlink.models.PostResponse;
+import com.example.redirectlink.services.BannedWordsCheckService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
@@ -20,12 +21,17 @@ import org.springframework.web.bind.annotation.*;
 import com.example.redirectlink.services.IdBaseConverter;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
 public class LinkController {
     @Autowired
     private LinkRepository linkRepository;
+
+    @Autowired
+    private BannedWordsCheckService bannedWordsCheckService;
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -49,8 +55,13 @@ public class LinkController {
     public ResponseEntity addTask(
             @Valid @RequestBody LinkEnity requestData
     ) {
-        requestData.setBase64Id("1");
+
         requestData.setKey(new LinkKey(UUID.randomUUID()));
+        requestData.setBase64Id(requestData.getKey().getLinkId().toString());
+
+        bannedWordsCheckService.checkIfUrlIncludesBannedWord(requestData.getLink());
+
+        requestData.setInitDate(LocalDate.now());
         LinkEnity savedValue = linkRepository.insert(requestData);
 
         if(savedValue.equals(requestData)){
