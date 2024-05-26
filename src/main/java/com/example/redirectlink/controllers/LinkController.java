@@ -56,8 +56,8 @@ public class LinkController {
             @Valid @RequestBody LinkEnity requestData
     ) {
 
-        requestData.setKey(new LinkKey(UUID.randomUUID()));
-        requestData.setBase64Id(requestData.getKey().getLinkId().toString());
+        requestData.setLinkId(UUID.randomUUID());
+        requestData.setBase64Id(requestData.getLinkId().toString());
 
         bannedWordsCheckService.checkIfUrlIncludesBannedWord(requestData.getLink());
 

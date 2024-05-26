@@ -5,16 +5,27 @@ import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
+
+import static org.springframework.data.cassandra.core.cql.PrimaryKeyType.PARTITIONED;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.UUID;
+
+import static org.springframework.data.cassandra.core.cql.PrimaryKeyType.PARTITIONED;
 
 @Table("links2")
 public class LinkEnity {
-    @PrimaryKey
-    private LinkKey key;
+    @PrimaryKeyColumn(name = "link_id", type = PARTITIONED)
+    private UUID linkId;
 
     @Column("link")
     @NotNull(message = "Link cannot be dsanull")
@@ -34,7 +45,7 @@ public class LinkEnity {
             final String link,
             final String base64Id
     ) {
-        this.key = key;
+        this.linkId = linkId;
         this.link = link;
         this.base64Id = base64Id;
     }
@@ -43,8 +54,8 @@ public class LinkEnity {
         return link;
     }
 
-    public LinkKey getKey() {
-        return this.key;
+    public UUID getLinkId() {
+        return this.linkId;
     }
 
     public void setLink(String link) {
@@ -55,8 +66,8 @@ public class LinkEnity {
         this.base64Id = base64Id;
     }
 
-    public void setKey(LinkKey key) {
-        this.key = key;
+    public void setLinkId(UUID linkId) {
+        this.linkId = linkId;
     }
 
     public String getBase64Id() {
